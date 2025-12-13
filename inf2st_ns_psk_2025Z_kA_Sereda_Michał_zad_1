@@ -1,0 +1,34 @@
+#Sereda Micha³ Informatyka PSISK  A
+.data
+	n: .word 5
+
+.text
+	lw $a0, n 
+	jal fac 
+	move $a0,$v0 
+	li $v0,1 
+	syscall 
+	li $v0,10 
+	syscall
+	
+fac:  
+	addi $sp, $sp, -12 
+	sw $s0, 8($sp) 
+	sw $ra, 4($sp) 
+	sw $a0, 0($sp) 
+	bne $a0, $zero, rek 
+	li $v0, 1 
+	j test_end
+	
+rek: 
+	move $s0, $a0
+	addi $a0, $a0, -1 
+	jal fac 
+	mul $v0, $v0, $s0 
+	
+test_end: 
+	lw $a0, 0($sp) 
+	lw $ra, 4($sp) 
+	lw $s0, 8($sp)
+	addi $sp, $sp, 12 
+	jr $ra
